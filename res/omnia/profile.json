@@ -1,0 +1,24 @@
+{
+  "app-name": "OmniaAssistenza",
+  "conn-type": "incoming",
+  "disable-settings": "Y",
+  "disable-account": "Y",
+  "disable-ab": "Y",
+  "override-settings": {
+    "custom-rendezvous-server": "remote.omniadigital.it",
+    "relay-server": "remote.omniadigital.it",
+    "api-server": "https://remote.omniadigital.it",
+    "key": "jBBQauwwA+R4en8gP2AQFpqXtJY9iYvPlOFRLZQalJ8=",
+    "allow-auto-update": "N",
+    "enable-check-update": "N",
+    "allow-command-line-settings-when-settings-disabled": "Y",
+    "hide-network-settings": "Y",
+    "hide-server-settings": "Y",
+    "hide-proxy-settings": "Y",
+    "hide-websocket-settings": "Y",
+    "hide-security-settings": "Y",
+    "hide-general-settings": "Y",
+    "hide-remote-printer-settings": "Y",
+    "hide-help-cards": "Y"
+  }
+}

@@ -421,7 +421,8 @@ impl Client {
         (i32, String),
         bool,
     )> {
-        if config::is_incoming_only() && !is_switch_sides_back(conn_type, &interface).await {
+        // Omnia: an incoming-only client never starts a session, switch sides included.
+        if config::is_incoming_only() {
             bail!("Incoming only mode");
         }
         // to-do: remember the port for each peer, so that we can retry easier
@@ -4546,6 +4547,7 @@ pub fn handle_login_error(
 // controlling peer; verify the local pending uuid before opening the connection.
 #[cfg(feature = "flutter")]
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
+#[allow(dead_code)]
 async fn is_switch_sides_back(conn_type: ConnType, interface: &impl Interface) -> bool {
     if conn_type != ConnType::DEFAULT_CONN {
         return false;

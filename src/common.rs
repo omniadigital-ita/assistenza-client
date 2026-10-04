@@ -2357,25 +2357,15 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
+/// Omnia: the product profile (name, fixed server/key/API, incoming-only, hidden settings) is
+/// compiled in from res/omnia/profile.json, in the same format the signed custom.txt carries.
+/// custom.txt next to the executable is ignored: nothing outside the binary changes the profile.
 pub fn load_custom_client() {
-    #[cfg(debug_assertions)]
-    if let Ok(data) = std::fs::read_to_string("./custom.txt") {
-        read_custom_client(data.trim());
-        return;
-    }
-    let Some(path) = std::env::current_exe().map_or(None, |x| x.parent().map(|x| x.to_path_buf()))
-    else {
-        return;
-    };
-    #[cfg(target_os = "macos")]
-    let path = path.join("../Resources");
-    let path = path.join("custom.txt");
-    if path.is_file() {
-        let Ok(data) = std::fs::read_to_string(&path) else {
-            log::error!("Failed to read custom client config");
-            return;
-        };
-        read_custom_client(&data.trim());
+    match serde_json::from_str::<std::collections::HashMap<String, serde_json::Value>>(include_str!(
+        "../res/omnia/profile.json"
+    )) {
+        Ok(data) => apply_custom_client(data),
+        Err(err) => log::error!("Invalid built-in profile: {}", err),
     }
 }
 
@@ -2469,13 +2459,16 @@ pub fn read_custom_client(config: &str) {
         log::error!("Failed to dec custom client config");
         return;
     };
-    let Ok(mut data) =
+    let Ok(data) =
         serde_json::from_slice::<std::collections::HashMap<String, serde_json::Value>>(&data)
     else {
         log::error!("Failed to parse custom client config");
         return;
     };
+    apply_custom_client(data);
+}
 
+fn apply_custom_client(mut data: std::collections::HashMap<String, serde_json::Value>) {
     if let Some(app_name) = data.remove("app-name") {
         if let Some(app_name) = app_name.as_str() {
             *config::APP_NAME.write().unwrap() = app_name.to_owned();
