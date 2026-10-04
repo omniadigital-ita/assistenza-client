@@ -116,6 +116,8 @@ jobs:
         run: |
           python3 .\build.py --portable --flutter --skip-portable-pack --hwcodec --vram
           mv ./flutter/build/windows/x64/runner/Release ./rustdesk
+          # The installer registers the service as <app-name>.exe: the payload must carry that name.
+          Rename-Item ./rustdesk/rustdesk.exe "$env:PRODUCT.exe"
 
           Invoke-WebRequest -Uri https://github.com/rustdesk-org/rdev/releases/download/usbmmidd_v2/usbmmidd_v2.zip -OutFile usbmmidd_v2.zip
           Expand-Archive usbmmidd_v2.zip -DestinationPath .
@@ -142,7 +144,7 @@ jobs:
           sed -i '/dpiAware/d' res/manifest.xml
           pushd ./libs/portable
           pip3 install -r requirements.txt
-          python3 ./generate.py -f ../../rustdesk/ -o . -e ../../rustdesk/rustdesk.exe
+          python3 ./generate.py -f ../../rustdesk/ -o . -e "../../rustdesk/${PRODUCT}.exe"
           popd
           mkdir -p ./out
           name="${PRODUCT}-${VERSION}-${GITHUB_REF_NAME//\//-}-x86_64.exe"
