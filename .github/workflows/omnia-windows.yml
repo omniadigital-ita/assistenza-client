@@ -19,6 +19,10 @@ env:
   VCPKG_COMMIT_ID: "9e593bb18ea69cc5095e012465dcd675a822ed0d"
   VERSION: "1.5.0"
   PRODUCT: "OmniaAssistenza"
+  # Downloads from releases that can be replaced upstream ("main"): pinned, the build stops if
+  # they change. Update deliberately after checking the new file.
+  ENGINE_SHA256: "EC8CABF36EE4FF24C8D98DE25B00E70781EB03876265AEE84D0FE554A110036E"
+  USBMMIDD_SHA256: "629B51E9944762BAE73948171C65D09A79595CF4C771A82EBC003FBBA5B24F51"
 
 jobs:
   generate-bridge:
@@ -73,7 +77,8 @@ jobs:
         run: |
           flutter precache --windows
           Invoke-WebRequest -Uri https://github.com/rustdesk/engine/releases/download/main/windows-x64-release.zip -OutFile windows-x64-release.zip
-          Get-FileHash windows-x64-release.zip -Algorithm SHA256 | Format-List
+          $h = (Get-FileHash windows-x64-release.zip -Algorithm SHA256).Hash
+          if ($h -ne $env:ENGINE_SHA256) { throw "Flutter engine changed upstream: $h (expected $env:ENGINE_SHA256)" }
           Expand-Archive -Path windows-x64-release.zip -DestinationPath windows-x64-release
           mv -Force windows-x64-release/*  C:/hostedtoolcache/windows/flutter/stable-${{ env.FLUTTER_VERSION }}-x64/bin/cache/artifacts/engine/windows-x64-release/
 
@@ -120,6 +125,8 @@ jobs:
           Rename-Item ./rustdesk/rustdesk.exe "$env:PRODUCT.exe"
 
           Invoke-WebRequest -Uri https://github.com/rustdesk-org/rdev/releases/download/usbmmidd_v2/usbmmidd_v2.zip -OutFile usbmmidd_v2.zip
+          $h = (Get-FileHash usbmmidd_v2.zip -Algorithm SHA256).Hash
+          if ($h -ne $env:USBMMIDD_SHA256) { throw "usbmmidd_v2.zip changed upstream: $h (expected $env:USBMMIDD_SHA256)" }
           Expand-Archive usbmmidd_v2.zip -DestinationPath .
           Remove-Item -Path usbmmidd_v2\Win32 -Recurse
           Remove-Item -Path "usbmmidd_v2\deviceinstaller64.exe", "usbmmidd_v2\deviceinstaller.exe", "usbmmidd_v2\usbmmidd.bat"
