@@ -1,10 +1,10 @@
 # Omnia Digital Assistenza
 
-Fork di [RustDesk](https://github.com/rustdesk/rustdesk) 1.5.0 (commit `fada664`), licenza **AGPL-3.0**
+Fork di [RustDesk](https://github.com/rustdesk/rustdesk) 1.5.3 (commit `95cca3f`), licenza **AGPL-3.0**
 come l'originale (file `LICENCE`). È il programma che i clienti di Omnia Digital installano per
 ricevere assistenza remota dal server `remote.omniadigital.it`.
 
-## Modifiche rispetto a RustDesk 1.5.0
+## Modifiche rispetto a RustDesk 1.5.3
 
 | File | Modifica |
 |---|---|
