@@ -8,7 +8,7 @@ ricevere assistenza remota dal server `remote.omniadigital.it`.
 
 | File | Modifica |
 |---|---|
-| `res/omnia/profile.json`, `src/common.rs` | Profilo compilato nel programma: nome `OmniaAssistenza`, server/chiave/API fissi, solo ricezione, impostazioni nascoste, aggiornamenti verso RustDesk disattivati. `custom.txt` viene ignorato. |
+| `res/omnia/profile.json`, `src/common.rs` | Profilo compilato nel programma: nome `OmniaAssistenza`, server/chiave/API fissi, trasporto WebSocket spento (il server non lo offre; dalla 1.5.3 la sua porta sarebbe modificabile da riga di comando), solo ricezione, impostazioni nascoste, aggiornamenti verso RustDesk disattivati. `custom.txt` viene ignorato. |
 | `src/platform/windows.rs` | Il nome del file eseguibile non può cambiare server, chiave o API. |
 | `src/client.rs`, `src/server/connection.rs` | Solo ricezione senza eccezioni: niente sessioni in uscita, richiesta di inversione dei ruoli rifiutata. |
 | `res/*.ico`, `res/*.png`, `flutter/assets/logo*.png`, `flutter/assets/icon.png`, `flutter/windows/runner/resources/app_icon.ico` | Icone e logo. |

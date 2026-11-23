@@ -9,6 +9,7 @@
     "relay-server": "remote.omniadigital.it",
     "api-server": "https://remote.omniadigital.it",
     "key": "jBBQauwwA+R4en8gP2AQFpqXtJY9iYvPlOFRLZQalJ8=",
+    "allow-websocket": "N",
     "allow-auto-update": "N",
     "enable-check-update": "N",
     "allow-command-line-settings-when-settings-disabled": "Y",
